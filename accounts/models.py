@@ -37,8 +37,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class UserBankAccount(models.Model):
-    user = models.OneToOneField(CustomUser, related_name='account', on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, related_name='accounts', on_delete=models.CASCADE)
     account_no = models.IntegerField(unique=True)
     initial_deposite_date = models.DateField(auto_now_add=True)
     def __str__(self):
         return str(self.account_no)
+
+
+class Transaction(models.Model):
+    account = models.ForeignKey(UserBankAccount, related_name = 'transactions', on_delete = models.CASCADE)
+    amount = models.DecimalField(decimal_places=2, max_digits = 12)
+    balance_after_transaction = models.DecimalField(decimal_places=2, max_digits = 12)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['timestamp']

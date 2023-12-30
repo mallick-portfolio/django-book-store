@@ -12,10 +12,8 @@ class Category(models.Model):
   user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='categories', null=True, blank=True)
   name = models.CharField(_("book category"),unique=True, max_length=50)
   slug = models.SlugField(null=True, blank=True)
-
   def __str__(self) -> str:
     return self.name
-
   def save(self, *args, **kwargs):
     self.slug = slugify(self.name)
     super(Category, self).save(*args, **kwargs)
@@ -43,7 +41,6 @@ class Review(models.Model):
   user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='reviews')
   book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
   create_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-
 
   def __str__(self) -> str:
     return f"{self.user.first_name} {self.user.last_name}"
