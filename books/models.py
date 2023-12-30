@@ -13,7 +13,8 @@ class Review(models.Model):
 
 
 class Category(models.Model):
-  name = models.CharField(_("book category"), max_length=50)
+  user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='categories', null=True, blank=True)
+  name = models.CharField(_("book category"),unique=True, max_length=50)
 
   def __str__(self) -> str:
     return self.name
@@ -25,7 +26,7 @@ class Book(models.Model):
   image = models.ImageField(_("book image"), upload_to='books/')
   description = models.TextField(_("book description"))
   price = models.IntegerField(_("book price"))
-  review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='books')
+  review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='books', null=True, blank=True)
 
   def __str__(self) -> str:
     return self.title
