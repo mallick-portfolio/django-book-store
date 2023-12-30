@@ -6,7 +6,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from . import forms
 from accounts import models
+from books.helpers import send_user_email
 # Create your views here.
+
+
 
 def user_logout(request):
   logout(request)
@@ -32,16 +35,19 @@ def login_user(request):
 
 def deposit(request):
   if request.method == "POST":
-    amount = request.POST['balance']
+    a = request.POST['balance']
+    amount = int(a)
     account = models.UserBankAccount.objects.filter(user=request.user).first()
     print(account)
     if account is not None:
-      if int(amount) > 1000:
+      if amount > 1000:
         messages.error(request, f'Failded to deposit .Max deposit amount is 1000!!!')
       else:
-        account.balance += int(amount)
+        account.balance += amount
         account.save()
         messages.success(request, 'Balance added successfully')
+        send_user_email(request.user, amount, "Deposite Money", './email/deposit_email.html')
+        return redirect('home')
     else:
       messages.error(request, "Something want wrong!!!")
   return render(request, './accounts/addmoney.html')

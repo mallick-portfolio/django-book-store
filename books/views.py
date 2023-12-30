@@ -13,6 +13,7 @@ from django.contrib import messages
 from books import models
 from accounts.models import UserBankAccount
 from django.utils.timezone import now
+from .helpers import send_user_email
 
 # Create your views here.
 
@@ -154,6 +155,7 @@ def borrow_book(request, book_id):
       messages.success(request, "Book borrow suffessfully!!!")
       account.save()
       book.save()
+      send_user_email(request.user, book.price, "Book borrow", "./email/borrow_email.html")
   else:
      messages.error(request, "Book not found!!!")
   return redirect('my-borrow-book')
