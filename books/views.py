@@ -93,7 +93,7 @@ class BookDetailView(FormMixin,DetailView):
   form_class = forms.ReviewForm
 
   def get_success_url(self):
-      return reverse_lazy('my-borrow-book', kwargs={'id': self.object.pk})
+      return reverse_lazy('book-details', kwargs={'id': self.object.pk})
 
   def get_context_data(self, **kwargs):
       context = super(BookDetailView, self).get_context_data(**kwargs)
