@@ -40,5 +40,5 @@ class UserRegistrationForm(FormView):
     print(form.cleaned_data)
     user = form.save()
     messages.success(self.request, "Your register successfully!!!")
-    # login(self.request, user)
+    login(self.request, user)
     return super().form_valid(form)
