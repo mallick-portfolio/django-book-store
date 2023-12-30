@@ -30,6 +30,17 @@ def login_user(request):
   else:
     return render(request, './accounts/login.html')
 
+def deposit(request):
+  if request.method == "POST":
+    amount = request.POST['balance']
+    account = models.UserBankAccount.objects.filter(user=request.user).first()
+    print(account)
+    if account is not None:
+      account.balance += int(amount)
+      account.save()
+      messages.success(request, 'Balance added successfully')
+  return render(request, './accounts/addmoney.html')
+
 
 
 class UserRegistrationForm(FormView):
@@ -44,3 +55,5 @@ class UserRegistrationForm(FormView):
     models.UserBankAccount.objects.create(user=user, account_no=10000 + user.id, balance=0)
     login(self.request, user)
     return super().form_valid(form)
+
+

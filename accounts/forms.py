@@ -52,9 +52,17 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 
-
-
 class CustomUserChangeForm(UserChangeForm):
   class Meta:
     model = CustomUser
     fields = ['email', 'first_name', 'last_name']
+
+
+
+
+
+
+
+
+
+

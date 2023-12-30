@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/',views.login_user, name='login'),
     path('logout/',views.user_logout, name='logout'),
     path('me/',MyBookListView.as_view(), name='my_book_list'),
+    path('deposit/',views.deposit, name='deposit'),
 ]

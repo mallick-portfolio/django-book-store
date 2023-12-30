@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, UserBankAccount, Transaction
+from .models import CustomUser, UserBankAccount
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 # Register your models here.
@@ -38,5 +38,4 @@ class UserBankAccountAdmin(admin.ModelAdmin):
   readonly_fields = ['balance']
 
 admin.site.register(UserBankAccount, UserBankAccountAdmin)
-admin.site.register(Transaction)
 admin.site.register(CustomUser, CustomUserAdmin)
