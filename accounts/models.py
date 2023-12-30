@@ -4,8 +4,10 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
 from .constant import GENDER_TYPE
-class CustomUser(AbstractBaseUser, PermissionsMixin):
 
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
   first_name = models.CharField(_("first name"), max_length=50, null=True, blank=True)
   last_name = models.CharField(_("last name"), max_length=50, null=True, blank=True)
   email =  models.EmailField(_("email address"), max_length=254, unique= True)

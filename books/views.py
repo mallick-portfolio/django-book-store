@@ -2,7 +2,7 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from books import forms
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -72,7 +72,6 @@ class BookListView(ListView):
 
 
 
-
 class BookDetailView(FormMixin,DetailView):
   context_object_name = 'book'
   model = models.Book
@@ -84,14 +83,18 @@ class BookDetailView(FormMixin,DetailView):
       return reverse_lazy('book-details', kwargs={'id': self.object.pk})
 
   def post(self, request, *args, **kwargs):
-    print(request.POST)
-    if request.method == "POST":
-      self.object = self.get_object()
-      form = self.get_form()
-      if form.is_valid():
+    if request.user.is_authenticated:
+      if request.method == "POST":
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+          messages.success(request, 'Review added successfully!!!')
           return self.form_valid(form)
-      else:
+        else:
           return self.form_invalid(form)
+    else:
+      messages.error(request, "You are not authrized to review. Please login first!!!")
+      return redirect('login')
 
   def form_valid(self, form):
       obj = form.save(commit=False)
@@ -100,6 +103,15 @@ class BookDetailView(FormMixin,DetailView):
       return super(BookDetailView, self).form_valid(form)
 
 
+
+class BookUpdateView(AdminRequiredMixin,SuccessMessageMixin,UpdateView):
+  form_class = forms.BookForm
+  model = models.Book
+  pk_url_kwarg = 'id'
+  template_name = './book/updatebook.html'
+
+  success_url = reverse_lazy('home')
+  success_message = "Book update successfully"
 
 
 
