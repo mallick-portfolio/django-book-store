@@ -7,4 +7,5 @@ urlpatterns = [
     path('add-book/', views.BookCreateView.as_view(), name="add-book"),
     path('<int:id>/', views.BookDetailView.as_view(), name="book-details"),
     path('update/<int:id>/', views.BookUpdateView.as_view(), name="book-update"),
+    path('borrow/<int:book_id>/', views.borrow_book, name="borrow-book"),
 ]

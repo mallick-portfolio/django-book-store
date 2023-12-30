@@ -47,7 +47,7 @@ class Review(models.Model):
 
 
 class Borrow(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE,related_name="borrows")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="borrows")
     borrow_date = models.DateField(auto_now_add=True)
     return_date = models.DateField(null=True, blank=True)

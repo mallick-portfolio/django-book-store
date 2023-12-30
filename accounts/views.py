@@ -36,9 +36,14 @@ def deposit(request):
     account = models.UserBankAccount.objects.filter(user=request.user).first()
     print(account)
     if account is not None:
-      account.balance += int(amount)
-      account.save()
-      messages.success(request, 'Balance added successfully')
+      if int(amount) > 1000:
+        messages.error(request, f'Failded to deposit .Max deposit amount is 1000!!!')
+      else:
+        account.balance += int(amount)
+        account.save()
+        messages.success(request, 'Balance added successfully')
+    else:
+      messages.error(request, "Something want wrong!!!")
   return render(request, './accounts/addmoney.html')
 
 

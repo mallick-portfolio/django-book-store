@@ -11,6 +11,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 from books import models
+from accounts.models import UserBankAccount
 # Create your views here.
 
 
@@ -97,7 +98,6 @@ class BookDetailView(FormMixin,DetailView):
       context.update({
           'reviews': models.Review.objects.filter(book=self.object),
       })
-      print(context)
       return context
 
   def post(self, request, *args, **kwargs):
@@ -132,6 +132,22 @@ class BookUpdateView(AdminRequiredMixin,SuccessMessageMixin,UpdateView):
   success_url = reverse_lazy('home')
   success_message = "Book update successfully"
 
+
+def borrow_book(request, book_id):
+  book = models.Book.objects.filter(id=book_id).first()
+  if book:
+    if book.current_borrower:
+        messages.error(request, "Book already borrowed by another user. Please try another time borrow!!!")
+    else:
+      book.current_borrower = request.user
+      account = UserBankAccount.objects.filter(user=request.user).first()
+      account.balance = account.balance - book.price
+      messages.success(request, "Book borrow suffessfully!!!")
+      account.save()
+      book.save()
+  else:
+     messages.error(request, "Book not found!!!")
+  return redirect('home')
 
 
 
