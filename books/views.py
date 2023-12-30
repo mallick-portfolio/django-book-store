@@ -6,8 +6,9 @@ from django.views.generic import CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import FormMixin
 from django.contrib import messages
 from books import models
 # Create your views here.
@@ -46,7 +47,7 @@ class BookCreateView(AdminRequiredMixin,SuccessMessageMixin, CreateView):
     obj = form.save(commit=False)
     obj.author = self.request.user
     obj.save()
-    return  super().form_valid(form)
+    return super().form_valid(form)
 
 
 
@@ -72,11 +73,31 @@ class BookListView(ListView):
 
 
 
-class BookDetailView(DetailView):
-   context_object_name = 'book'
-   model = models.Book
-   pk_url_kwarg = 'id'
-   template_name = './book/singlebook.html'
+class BookDetailView(FormMixin,DetailView):
+  context_object_name = 'book'
+  model = models.Book
+  pk_url_kwarg = 'id'
+  template_name = './book/singlebook.html'
+  form_class = forms.ReviewForm
+
+  def get_success_url(self):
+      return reverse_lazy('book-details', kwargs={'id': self.object.pk})
+
+  def post(self, request, *args, **kwargs):
+    print(request.POST)
+    if request.method == "POST":
+      self.object = self.get_object()
+      form = self.get_form()
+      if form.is_valid():
+          return self.form_valid(form)
+      else:
+          return self.form_invalid(form)
+
+  def form_valid(self, form):
+      obj = form.save(commit=False)
+      obj.user = self.request.user
+      obj.save()
+      return super(BookDetailView, self).form_valid(form)
 
 
 

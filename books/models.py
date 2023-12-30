@@ -11,7 +11,7 @@ class Review(models.Model):
   description = models.CharField(_("review description"), max_length=255)
 
   def __str__(self) -> str:
-    return self.user
+    return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Category(models.Model):

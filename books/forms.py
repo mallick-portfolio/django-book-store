@@ -1,6 +1,5 @@
 from typing import Any
 from django import forms
-
 from books.models import (Book, Review, Category)
 
 class CategoryForm(forms.ModelForm):
@@ -26,3 +25,12 @@ class BookForm(forms.ModelForm):
                 'focus:bg-white focus:border-gray-500'
             )
         })
+
+
+
+class ReviewForm(forms.ModelForm):
+  class Meta:
+    model = Review
+    fields = ['description']
+
+  
