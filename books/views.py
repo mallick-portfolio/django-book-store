@@ -2,7 +2,7 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from books import forms
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -72,7 +72,11 @@ class BookListView(ListView):
 
 
 
-
+class BookDetailView(DetailView):
+   context_object_name = 'book'
+   model = models.Book
+   pk_url_kwarg = 'id'
+   template_name = './book/singlebook.html'
 
 
 
