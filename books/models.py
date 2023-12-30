@@ -1,6 +1,8 @@
 from django.db import models
 from accounts.models import CustomUser
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
+
 # Create your models here.
 
 
@@ -15,9 +17,14 @@ class Review(models.Model):
 class Category(models.Model):
   user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='categories', null=True, blank=True)
   name = models.CharField(_("book category"),unique=True, max_length=50)
+  slug = models.SlugField(null=True, blank=True)
 
   def __str__(self) -> str:
     return self.name
+
+  def save(self, *args, **kwargs):
+    self.slug = slugify(self.name)
+    super(Category, self).save(*args, **kwargs)
 
 
 class Book(models.Model):

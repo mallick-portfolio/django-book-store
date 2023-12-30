@@ -1,4 +1,5 @@
 from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from books import forms
 from django.views.generic import CreateView, ListView
@@ -60,3 +61,22 @@ class BookListView(ListView):
             'categories': models.Category.objects.all(),
         })
         return context
+
+   def get_queryset(self) :
+      qs = self.model.objects.all()
+      if self.kwargs.get('slug'):
+        qs = qs.filter(category__slug=self.kwargs['slug'])
+      return qs
+
+
+
+
+
+
+
+
+
+
+
+
+
