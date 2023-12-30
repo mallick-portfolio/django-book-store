@@ -12,6 +12,8 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 from books import models
 from accounts.models import UserBankAccount
+from django.utils.timezone import now
+
 # Create your views here.
 
 
@@ -154,11 +156,27 @@ def borrow_book(request, book_id):
 
 def my_borrow_book(request):
    borrow_books = models.Borrow.objects.filter(user=request.user)
-   print(borrow_books)
    return render(request, './book/my_borrow_book.html', {
       "borrow_books": borrow_books
    })
 
+def return_book(request, borrow_id):
+  borrow = models.Borrow.objects.filter(id=borrow_id).first()
+  if borrow:
+     print(borrow)
+     book = models.Book.objects.filter(id=borrow.book.id).first()
+     book.current_borrower = None
 
+     borrow.return_date = now()
+     account = UserBankAccount.objects.filter(user=request.user).first()
+     account.balance += book.price
+     book.save()
+     account.save()
+     borrow.delete()
+     messages.success(request, "Book return successfully!!!")
+
+  else:
+     messages.error(request, "Invalid borrowed id!!!")
+  return redirect('my-borrow-book')
 
 
