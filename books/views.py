@@ -97,8 +97,12 @@ class BookDetailView(FormMixin,DetailView):
 
   def get_context_data(self, **kwargs):
       context = super(BookDetailView, self).get_context_data(**kwargs)
+      is_borrowed_this_book = models.Borrow.objects.filter(user=self.request.user, book=self.object).first()
+
+
       context.update({
           'reviews': models.Review.objects.filter(book=self.object),
+          'is_borrowed_this_book': is_borrowed_this_book,
       })
       return context
 

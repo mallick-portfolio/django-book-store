@@ -44,6 +44,8 @@
 
       {% endfor %}
 
+    {% if is_borrowed_this_book %}
+
     <form class='mt-12' method='post'>
       {% csrf_token %}
       <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -58,6 +60,10 @@
           </div>
       </div>
     </form>
+
+    {% endif %}
+
+
 
 
 
