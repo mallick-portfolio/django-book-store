@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+  <div class="p-16 flex  gap-3">
+    <div class="w-1/6 ">
+
+      <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Category List</h5>
+      <div class="w-48 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+
+
+        {% for category in categories %}
+            <button type="button" class="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+
+              {{category.name}}
+          </button>
+        {% endfor %}
+
+
+      </div>
+
+
+    </div>
+    <div class="grid w-5/1 grid-cols-2 md:grid-cols-3 gap-4">
+      {% for book in books %}
+      <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a href="#">
+            <img class="rounded-t-lg h-24" src="{{book.image.url}}" alt="" />
+        </a>
+        <div class="p-5">
+            <a href="#">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{book.title}}</h5>
+            </a>
+            <span class="bg-green-400 text-white text-xs font-medium my-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-white">{{book.category.name}}</span>
+
+
+
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              {{book.description|truncatewords:25}}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">$599</span>
+                <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+
+
+{% endblock content %}
