@@ -12,6 +12,17 @@ class CategoryCreateView(CreateView):
   form_class = forms.CategoryForm
   success_url = reverse_lazy('home')
 
+  def form_valid(self, form):
+    obj = form.save(commit=False)
+    obj.user = self.request.user
+    obj.save()
+    return  super().form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class BookCreateView(CreateView):
+  template_name = "./book/form.html"
+  form_class = forms.CategoryForm
+  success_url = reverse_lazy('home')
 
   def form_valid(self, form):
     obj = form.save(commit=False)

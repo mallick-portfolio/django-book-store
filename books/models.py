@@ -21,12 +21,14 @@ class Category(models.Model):
 
 
 class Book(models.Model):
+
   title = models.CharField(_("book title"), max_length=50)
   category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='books')
   image = models.ImageField(_("book image"), upload_to='books/')
   description = models.TextField(_("book description"))
   price = models.IntegerField(_("book price"))
   review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='books', null=True, blank=True)
+  author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='books', null=True, blank=True)
 
   def __str__(self) -> str:
     return self.title
