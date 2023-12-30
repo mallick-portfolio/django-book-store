@@ -91,7 +91,7 @@ class BookDetailView(FormMixin,DetailView):
   form_class = forms.ReviewForm
 
   def get_success_url(self):
-      return reverse_lazy('book-details', kwargs={'id': self.object.pk})
+      return reverse_lazy('my-borrow-book', kwargs={'id': self.object.pk})
 
   def get_context_data(self, **kwargs):
       context = super(BookDetailView, self).get_context_data(**kwargs)
@@ -141,13 +141,23 @@ def borrow_book(request, book_id):
     else:
       book.current_borrower = request.user
       account = UserBankAccount.objects.filter(user=request.user).first()
+      balance_after_borrow = account.balance - book.price
+      models.Borrow.objects.create(book=book, user=request.user, balance_after_borrow=balance_after_borrow)
+
       account.balance = account.balance - book.price
       messages.success(request, "Book borrow suffessfully!!!")
       account.save()
       book.save()
   else:
      messages.error(request, "Book not found!!!")
-  return redirect('home')
+  return redirect('my-borrow-book')
+
+def my_borrow_book(request):
+   borrow_books = models.Borrow.objects.filter(user=request.user)
+   print(borrow_books)
+   return render(request, './book/my_borrow_book.html', {
+      "borrow_books": borrow_books
+   })
 
 
 
