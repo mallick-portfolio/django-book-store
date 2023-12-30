@@ -70,6 +70,16 @@ class BookListView(ListView):
       return qs
 
 
+class MyBookListView(ListView):
+   template_name = './pages/profile.html'
+   model = models.Book
+   context_object_name = 'books'
+
+   def get_queryset(self) :
+      qs = self.model.objects.all()
+      return qs
+
+
 
 
 class BookDetailView(FormMixin,DetailView):

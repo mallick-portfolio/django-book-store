@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+  <div class="p-16 flex  gap-3">
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {% for book in books %}
+      <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <a href="#">
+            <img class="rounded-t-lg h-24" src="{{book.image.url}}" alt="" />
+        </a>
+        <div class="p-5">
+            <a href="#">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{book.title}}</h5>
+            </a>
+
+           <p>
+              Category: <span class="bg-red-400 text-white text-xs font-medium my-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-white">
+                {{book.category.name}}
+              </span>
+            </p>
+           <p>
+              Author: <span class="bg-green-400 text-white text-xs font-medium my-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-white">
+              {{book.author.first_name}}
+            </span>
+            </p>
+
+
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              {{book.description|truncatewords:25}}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">${{book.price}}</span>
+                <a href="{% url 'book-update' book.id %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update book</a>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+
+
+{% endblock content %}
