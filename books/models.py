@@ -28,6 +28,8 @@ class Book(models.Model):
   description = models.TextField(_("book description"))
   price = models.IntegerField(_("book price"))
   author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='books', null=True, blank=True)
+  current_borrower = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+
 
   def __str__(self) -> str:
     return self.title
@@ -45,3 +47,10 @@ class Review(models.Model):
 
   def __str__(self) -> str:
     return f"{self.user.first_name} {self.user.last_name}"
+
+
+class Borrow(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    borrow_date = models.DateField(auto_now_add=True)
+    return_date = models.DateField(null=True, blank=True)

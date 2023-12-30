@@ -33,3 +33,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
   def __str__(self) -> str:
     return self.email
+
+
+
+class UserBankAccount(models.Model):
+    user = models.OneToOneField(CustomUser, related_name='account', on_delete=models.CASCADE)
+    account_no = models.IntegerField(unique=True)
+    initial_deposite_date = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return str(self.account_no)
