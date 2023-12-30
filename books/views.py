@@ -92,6 +92,14 @@ class BookDetailView(FormMixin,DetailView):
   def get_success_url(self):
       return reverse_lazy('book-details', kwargs={'id': self.object.pk})
 
+  def get_context_data(self, **kwargs):
+      context = super(BookDetailView, self).get_context_data(**kwargs)
+      context.update({
+          'reviews': models.Review.objects.filter(book=self.object),
+      })
+      print(context)
+      return context
+
   def post(self, request, *args, **kwargs):
     if request.user.is_authenticated:
       if request.method == "POST":
@@ -109,6 +117,7 @@ class BookDetailView(FormMixin,DetailView):
   def form_valid(self, form):
       obj = form.save(commit=False)
       obj.user = self.request.user
+      obj.book = self.object
       obj.save()
       return super(BookDetailView, self).form_valid(form)
 

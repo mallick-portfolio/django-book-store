@@ -40,5 +40,8 @@ class Review(models.Model):
   description = models.CharField(_("review description"), max_length=255)
   user = models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='reviews')
   book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
+  create_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+
   def __str__(self) -> str:
     return f"{self.user.first_name} {self.user.last_name}"
