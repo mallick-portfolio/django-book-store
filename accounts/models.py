@@ -21,6 +21,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 
+
+
   is_staff = models.BooleanField(default=False)
   is_active = models.BooleanField(default=True)
   date_joined = models.DateTimeField(default=timezone.now)
@@ -39,7 +41,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class UserBankAccount(models.Model):
     user = models.OneToOneField(CustomUser, related_name='accounts', on_delete=models.CASCADE)
     account_no = models.IntegerField(unique=True)
+    balance = models.IntegerField(null=True, blank=True)
     initial_deposite_date = models.DateField(auto_now_add=True)
+    
     def __str__(self):
         return str(self.account_no)
 

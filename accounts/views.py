@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from . import forms
+from accounts import models
 # Create your views here.
 
 def user_logout(request):
@@ -37,8 +38,9 @@ class UserRegistrationForm(FormView):
   success_url = reverse_lazy('home')
 
   def form_valid(self,form):
-    print(form.cleaned_data)
+
     user = form.save()
     messages.success(self.request, "Your register successfully!!!")
+    models.UserBankAccount.objects.create(user=user, account_no=10000 + user.id, balance=0)
     login(self.request, user)
     return super().form_valid(form)
