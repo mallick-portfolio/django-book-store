@@ -29,8 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
-
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
@@ -94,17 +93,22 @@ WSGI_APPLICATION = 'book_store.wsgi.application'
 # }
 
 
-
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': os.environ.get('DATABASE'),
-       'USER': os.environ.get('SQL_USER'),
-       'PASSWORD': os.environ.get('SQL_PASSWORD'),
-       'HOST': os.environ.get('SQL_HOST'),
-       'PORT': os.environ.get('SQL_PORT'),
-   }
+    'default': dj_database_url.config(
+        default='postgres://book_store_ykc1_user:WLIXPxcMlKweg525nAp9NRgdD5S4QJ8d@dpg-cm86cnfqd2ns73dg54i0-a.oregon-postgres.render.com/book_store_ykc1',
+    )
 }
+
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': os.environ.get('DATABASE'),
+#        'USER': os.environ.get('SQL_USER'),
+#        'PASSWORD': os.environ.get('SQL_PASSWORD'),
+#        'HOST': 'localhost',
+#        'PORT': os.environ.get('SQL_PORT'),
+#    }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
