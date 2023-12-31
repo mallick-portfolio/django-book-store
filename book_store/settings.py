@@ -32,6 +32,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://book-library-ezh8.onrender.com',]
+
 
 
 # Application definition
