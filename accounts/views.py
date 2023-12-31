@@ -7,6 +7,8 @@ from django.contrib import messages
 from . import forms
 from accounts import models
 from books.helpers import send_user_email
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -33,6 +35,7 @@ def login_user(request):
   else:
     return render(request, './accounts/login.html')
 
+@login_required
 def deposit(request):
   if request.method == "POST":
     a = request.POST['balance']
